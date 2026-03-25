@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RYAN SHATFORD | Premium GTA V Modding Services</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            purple: '#A855F7', // Neon Purple
+                            purpled: '#7e22ce', // Dark Neon Purple
+                            green: '#22c55e', // Neon Green
+                            dark: '#0f0f11', // Very dark gray
+                            darker: '#09090b', // Almost black
+                            card: '#18181b', // Card background 
+                        }
+                    },
+                    boxShadow: {
+                        'neon-purple': '0 0 25px rgba(168, 85, 247, 0.4)',
+                        'neon-green': '0 0 25px rgba(34, 197, 94, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #09090b;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Glassmorphism utility */
+        .glass-card {
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #A855F7, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #09090b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A855F7;
+        }
+
+        @keyframes active-zoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+        .bg-zoom {
+            animation: active-zoom 20s infinite alternate linear;
+        }
+
+        /* Intro Section Styles */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            background: #09090b;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Courier New', Courier, monospace;
+            transition: opacity 0.8s ease-in-out, visibility 0.8s;
+        }
+        #intro-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .terminal-box {
+            padding: 2rem;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            background: rgba(15, 15, 17, 0.8);
+            border-radius: 1rem;
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+        .terminal-line {
+            color: #A855F7;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #A855F7;
+            width: 0;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink { 50% { border-color: transparent } }
+        
+        .line-1 { animation: typing 0.6s steps(30) forwards, blink 0.5s infinite; }
+        .line-2 { animation: typing 0.6s steps(30) forwards 0.6s, blink 0.5s infinite; }
+        .line-3 { animation: typing 0.6s steps(30) forwards 1.2s, blink 0.5s infinite; }
+        .line-4 { animation: typing 0.6s steps(30) forwards 1.8s, blink 0.5s infinite; }
+        
+        .progress-container {
+            width: 200px;
+            height: 2px;
+            background: rgba(255,255,255,0.05);
+            margin-top: 2rem;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #A855F7;
+            box-shadow: 0 0 10px #A855F7;
+            transition: width 2.5s ease-in-out;
+        }
+
+        .scroll-down-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.6rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        .scroll-down-indicator span {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, #A855F7, transparent);
+            position: relative;
+            overflow: hidden;
+        }
+        .scroll-down-indicator span::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            animation: scroll-line 2s infinite ease-out;
+        }
+        @keyframes scroll-line {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-purple selection:text-white overflow-hidden">
+
+    <!-- Intro Overlay -->
+    <div id="intro-overlay">
+        <div class="terminal-box">
+            <div class="terminal-line line-1">> INITIALIZING BOOT SEQUENCE...</div>
+            <div class="terminal-line line-2">> LOADING SECURE INJECTION...</div>
+            <div class="terminal-line line-3">> BYPASSING ANTI-CHEAT...</div>
+            <div class="terminal-line line-4">> WELCOME TO RYAN SHATFORD</div>
+        </div>
+        <div class="progress-container">
+            <div id="intro-progress" class="progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- Decorative background glow -->
+    <div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-purple rounded-full blur-[150px] opacity-20 pointer-events-none z-[-1]"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-green rounded-full blur-[150px] opacity-10 pointer-events-none z-[-1]"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 w-full z-[100] glass-card border-b border-white/5 py-4 px-6 md:px-12 flex justify-between items-center bg-brand-dark/80">
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-brand-purple rounded-lg flex items-center justify-center shadow-neon-purple">
+                <i class="fa-solid fa-bolt text-white text-xl"></i>
+            </div>
+            <span class="text-xl md:text-2xl font-black font-heading tracking-tighter uppercase whitespace-nowrap">RYAN <span class="text-brand-purple">SHATFORD</span></span>
+        </div>
+        <div class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-gray-400">
+            <a href="#hero" class="hover:text-brand-purple transition-colors">Home</a>
+            <a href="#about" class="hover:text-brand-purple transition-colors">About Us</a>
+            <a href="#services" class="hover:text-brand-purple transition-colors">Services</a>
+            <a href="#portfolio" class="hover:text-brand-purple transition-colors">Proof</a>
+            <a href="#contact" class="hover:text-brand-purple transition-colors">Contact</a>
+        </div>
+        <a href="https://discord.gg/qNndBDWYQW" target="_blank" class="px-6 py-2 bg-brand-purple hover:bg-brand-purpled text-white text-xs font-bold rounded-full transition-all duration-300 shadow-neon-purple uppercase tracking-widest">
+            Join Discord
+        </a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center pt-20 px-6 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-b from-brand-darker/0 via-brand-darker/80 to-brand-darker z-10"></div>
+            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2070" 
+                 class="w-full h-full object-cover opacity-20 bg-zoom" alt="GTA Background">
+        </div>
+
+        <div class="max-w-7xl mx-auto w-full relative z-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-right" data-aos-duration="1200">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-purple/10 border border-brand-purple/20 text-brand-purple text-xs font-bold uppercase tracking-widest mb-6">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-purple opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-purple"></span>
+                    </span>
+                    Now Active & Safe
+                </div>
+                <h1 class="text-6xl md:text-8xl font-black font-heading mb-6 leading-tight uppercase">
+                    Level Up Your <br>
+                    <span class="text-gradient">GTA Empire</span>
+                </h1>
+                <p class="text-xl text-gray-400 mb-10 max-w-lg leading-relaxed">
+                    Premium modding services by <strong>Ryan Shatford</strong>. Billions in cash, max levels, and unlock-all packages delivered with industry-leading safety.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#portfolio" class="px-10 py-5 bg-brand-purple hover:bg-brand-purpled text-white font-black rounded-xl transition-all duration-300 hover:shadow-neon-purple hover:-translate-y-1 flex items-center gap-3">
+                        View Live Proof
+                    </a>
+                    <a href="#services" class="px-10 py-5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-black rounded-xl transition-all duration-300">
+                        Our Services
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Modern Tech Card Overlay -->
+            <div class="hidden lg:block relative" data-aos="zoom-in" data-aos-duration="1500">
+                <div class="absolute -inset-10 bg-brand-purple/20 blur-[120px] rounded-full pointer-events-none"></div>
+                <div class="glass-card p-6 rounded-[2.5rem] border border-white/10 relative overflow-hidden backdrop-blur-2xl">
+                    <div class="bg-brand-darker/80 rounded-3xl p-8 border border-white/5">
+                        <div class="flex justify-between items-center mb-10">
+                            <div>
+                                <h3 class="text-lg font-black uppercase tracking-tighter">Service Monitor</h3>
+                                <p class="text-[10px] uppercase tracking-widest text-gray-500">v4.2.0 Stable Build</p>
+                            </div>
+                            <span class="px-4 py-1.5 bg-brand-green/10 text-brand-green text-[10px] font-bold rounded-full border border-brand-green/20 uppercase tracking-widest flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-green animate-pulse"></span>
+                                Secure
+                            </span>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 group hover:bg-white/10 transition-colors">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-orange-500/20 flex items-center justify-center text-orange-400">
+                                        <i class="fa-solid fa-sack-dollar"></i>
+                                    </div>
+                                    <div class="text-sm font-bold">10B Money Injection</div>
+                                </div>
+                                <span class="text-[10px] font-mono text-brand-green">SUCCESS</span>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-brand-purple/5 rounded-2xl border border-brand-purple/20">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-brand-purple/20 flex items-center justify-center text-brand-purple">
+                                        <i class="fa-solid fa-crown"></i>
+                                    </div>
+                                    <div class="text-sm font-bold">Level 8000 Unlock</div>
+                                </div>
+                                <span class="text-[10px] font-mono text-brand-purple animate-pulse">ACTIVE</span>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
+                                        <i class="fa-solid fa-shield-halved"></i>
+                                    </div>
+                                    <div class="text-sm font-bold">Anti-Ban Shield</div>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-500">ENGAGED</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-down-indicator">
+            Scroll
+            <span></span>
+        </div>
+    </section>
+
+    <!-- Services Section (New: Help drive sales) -->
+    <section id="services" class="py-32 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="text-brand-purple font-semibold tracking-wider uppercase text-sm mb-2 block">Premium Packages</span>
+            <h2 class="text-4xl md:text-5xl font-black mb-4 font-heading leading-tight uppercase">Custom <span class="text-gradient">Gaming Boosts</span></h2>
+            <p class="text-gray-400 max-w-xl mx-auto">Select the perfect boost for your playstyle. Handled with absolute care & precision.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass-card p-10 rounded-[2.5rem] border border-white/5 hover:border-brand-purple/40 transition-all duration-500 flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-20 h-20 bg-brand-purple/10 rounded-2xl flex items-center justify-center text-brand-purple text-3xl mb-8 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-piggy-bank"></i>
+                </div>
+                <h3 class="text-2xl font-black uppercase mb-4">Starter Wealth</h3>
+                <p class="text-gray-500 text-sm mb-8">Perfect for players needing a quick injection of cash for properties and vehicles.</p>
+                <div class="mt-auto text-brand-purple text-lg font-bold uppercase tracking-widest py-2 border-b-2 border-brand-purple/20">From $10</div>
+            </div>
+            <div class="glass-card p-10 rounded-[2.5rem] border-2 border-brand-purple shadow-neon-purple flex flex-col items-center text-center scale-105 relative z-10" data-aos="fade-up">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-purple text-white text-[10px] font-black uppercase px-4 py-1 rounded-full whitespace-nowrap">
+                    Most Popular
+                </div>
+                <div class="w-20 h-20 bg-brand-purple rounded-2xl flex items-center justify-center text-white text-3xl mb-8">
+                    <i class="fa-solid fa-gem"></i>
+                </div>
+                <h3 class="text-2xl font-black uppercase mb-4">Elite Bundle</h3>
+                <p class="text-gray-500 text-sm mb-8">100B Cash, Max Level (8000), All Trophies & All Property Unlocks across the board.</p>
+                <div class="mt-auto text-brand-purple text-lg font-bold uppercase tracking-widest py-2 border-b-2 border-brand-purple/20">From $25</div>
+            </div>
+            <div class="glass-card p-10 rounded-[2.5rem] border border-white/5 hover:border-brand-green/40 transition-all duration-500 flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-20 h-20 bg-brand-green/10 rounded-2xl flex items-center justify-center text-brand-green text-3xl mb-8 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-user-gear"></i>
+                </div>
+                <h3 class="text-2xl font-black uppercase mb-4">Custom Accounts</h3>
+                <p class="text-gray-500 text-sm mb-8">Fully tailored modded accounts built specifically to your requested specifications.</p>
+                <div class="mt-auto text-brand-green text-lg font-bold uppercase tracking-widest py-2 border-b-2 border-brand-green/20">Custom Price</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-32 px-6 md:px-12 lg:px-24 max-w-4xl mx-auto">
+        <div class="text-center" data-aos="fade-up">
+            <span class="text-brand-purple font-semibold tracking-wider uppercase text-sm mb-2 block">Our Superiority</span>
+            <h2 class="text-4xl md:text-6xl font-black mb-8 font-heading leading-tight uppercase">The Most Trusted <br><span class="text-gradient">Professional Modder</span></h2>
+            <p class="text-gray-400 text-lg mb-10 leading-relaxed mx-auto max-w-2xl">
+                Ryan Shatford has spent years perfecting injection techniques. While others use generic scripts, we utilize private, encrypted methods that stay undetected, ensuring your account grows safely. From billions in bank balances to full property unlocks, we handle it all.
+            </p>
+            <div class="space-y-6 flex flex-col items-center">
+                <div class="flex items-center gap-5 group">
+                    <div class="w-12 h-12 rounded-xl bg-brand-green/10 text-brand-green flex items-center justify-center group-hover:bg-brand-green group-hover:text-white transition-all duration-300">
+                        <i class="fa-solid fa-shield-check"></i>
+                    </div>
+                    <div class="text-lg font-bold text-gray-200">Military-Grade Anti-Ban Shield</div>
+                </div>
+                <div class="flex items-center gap-5 group">
+                    <div class="w-12 h-12 rounded-xl bg-brand-purple/10 text-brand-purple flex items-center justify-center group-hover:bg-brand-purple group-hover:text-white transition-all duration-300">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </div>
+                    <div class="text-lg font-bold text-gray-200">Cross-Platform (PC, PS5, XBOX)</div>
+                </div>
+                <div class="flex items-center gap-5 group">
+                    <div class="w-12 h-12 rounded-xl bg-brand-green/10 text-brand-green flex items-center justify-center group-hover:bg-brand-green group-hover:text-white transition-all duration-300">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <div class="text-lg font-bold text-gray-200">Secure Guest Session Protocol</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio (Proof) Section -->
+    <section class="py-32 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto relative z-10" id="portfolio">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-20" data-aos="fade-up" data-aos-duration="800">
+            <span class="text-brand-purple font-semibold tracking-wider uppercase text-sm mb-2 block">Live Evidence</span>
+            <h2 class="text-4xl md:text-6xl font-black mb-4 font-heading uppercase">Real Proof, <span class="text-gradient">Real Results</span></h2>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">Videos don't lie. See exactly how Ryan Shatford transforms accounts in real-time. No cuts, no fakes, just the grind.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            
+            <!-- Video Column (Left) -->
+            <div class="lg:col-span-5 relative group" data-aos="fade-right" data-aos-duration="1000">
+                <div class="absolute -inset-2 bg-gradient-to-r from-brand-purple to-brand-green rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+                <a href="https://www.tiktok.com/@gtamoddedaccount007" target="_blank" class="block relative glass-card rounded-[2rem] overflow-hidden shadow-2xl p-2 border border-white/10 group/video">
+                    <div class="relative rounded-[1.5rem] overflow-hidden bg-brand-dark aspect-[9/16] max-h-[600px] flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1000" 
+                             class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700" alt="TikTok Proof">
+                        
+                        <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 group-hover:bg-black/20 transition-colors">
+                            <div class="w-20 h-20 bg-brand-purple rounded-full flex items-center justify-center shadow-neon-purple transform group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-play text-white text-3xl ml-1"></i>
+                            </div>
+                            <span class="mt-6 text-white font-black uppercase tracking-widest text-sm drop-shadow-lg">Watch Proof On TikTok</span>
+                        </div>
+
+                        <div class="absolute top-6 left-6 px-4 py-2 bg-black/80 backdrop-blur-md rounded-full border border-white/10 flex items-center gap-2">
+                             <i class="fa-brands fa-tiktok text-[#ff0050]"></i>
+                             <span class="text-[10px] font-bold uppercase tracking-tighter">@gtamoddedaccount007</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="lg:col-span-7 flex flex-col justify-center" data-aos="fade-left" data-aos-duration="1000">
+                <h3 class="text-4xl font-black mb-8 font-heading text-white uppercase leading-tight">Instant Wealth <br><span class="text-brand-purple">At Your Fingertips</span></h3>
+                
+                <ul class="space-y-6 mb-12">
+                    <li class="flex items-start text-gray-300 text-lg">
+                        <span class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-xl bg-brand-purple/20 text-brand-purple mr-5">
+                            <i class="fa-solid fa-video"></i>
+                        </span>
+                        <span><strong>Raw Gameplay Proof</strong> showing massive money drops live.</span>
+                    </li>
+                    <li class="flex items-start text-gray-300 text-lg">
+                        <span class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-xl bg-brand-purple/20 text-brand-purple mr-5">
+                            <i class="fa-solid fa-eye-slash"></i>
+                        </span>
+                        <span><strong>Shadow Implementation:</strong> No risk of being spotted or banned.</span>
+                    </li>
+                    <li class="flex items-start text-gray-300 text-lg">
+                        <span class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-xl bg-brand-purple/20 text-brand-purple mr-5">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </span>
+                        <span><strong>Ryan Shatford:</strong> Trusted by veterans since the game launched.</span>
+                    </li>
+                </ul>
+
+                <div class="grid grid-cols-2 gap-4 mb-12">
+                    <div class="glass-card p-6 rounded-2xl border border-white/5 hover:border-brand-green/30 transition-all group">
+                        <div class="w-12 h-12 rounded-xl bg-brand-green/10 flex items-center justify-center text-brand-green mb-4 group-hover:scale-110 transition-transform">
+                             <i class="fa-solid fa-money-bill-transfer text-xl"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-1">Billions in Cash</h4>
+                        <p class="text-xs text-gray-500">Banked safe & ready to spend.</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl border border-white/5 hover:border-brand-purple/30 transition-all group">
+                        <div class="w-12 h-12 rounded-xl bg-brand-purple/10 flex items-center justify-center text-brand-purple mb-4 group-hover:scale-110 transition-transform">
+                             <i class="fa-solid fa-trophy text-xl"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-1">Max Rank</h4>
+                        <p class="text-xs text-gray-500">Unlocks all clothing & guns.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="https://discord.gg/qNndBDWYQW" target="_blank" class="px-10 py-5 bg-brand-purple hover:bg-brand-purpled text-white font-black rounded-2xl transition-all duration-300 shadow-neon-purple hover:-translate-y-1 flex items-center justify-center gap-3">
+                        <i class="fa-brands fa-discord text-2xl"></i> Join Discord
+                    </a>
+                    <a href="https://www.tiktok.com/@gtamoddedaccount007" target="_blank" class="px-10 py-5 bg-white/5 border border-white/10 hover:border-white text-white font-black rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 group">
+                        <i class="fa-brands fa-tiktok text-2xl group-hover:text-[#ff0050] transition-colors"></i> Follow Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section (New: Helps reduce discord support load) -->
+    <section class="py-32 px-6 md:px-12 lg:px-24 max-w-5xl mx-auto">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="text-brand-purple font-semibold tracking-wider uppercase text-sm mb-2 block">Common Questions</span>
+            <h2 class="text-4xl md:text-5xl font-black mb-4 font-heading leading-tight uppercase">Support <span class="text-gradient">Hub</span></h2>
+        </div>
+        <div class="space-y-4">
+            <div class="glass-card p-8 rounded-3xl border border-white/5" data-aos="fade-up">
+                <h4 class="text-white font-black uppercase mb-3 text-lg flex items-center gap-4">
+                    <span class="w-8 h-8 rounded-lg bg-brand-purple/20 text-brand-purple flex items-center justify-center text-xs">Q</span>
+                    Is this bridge safe from bans?
+                </h4>
+                <p class="text-gray-400 text-sm pl-12">Yes. We use internal injection methods that bypass the standard anti-cheat detection systems. Our success rate is 99.9% since launch.</p>
+            </div>
+            <div class="glass-card p-8 rounded-3xl border border-white/5" data-aos="fade-up" data-aos-delay="100">
+                <h4 class="text-white font-black uppercase mb-3 text-lg flex items-center gap-4">
+                    <span class="w-8 h-8 rounded-lg bg-brand-purple/20 text-brand-purple flex items-center justify-center text-xs">Q</span>
+                    How long does it take?
+                </h4>
+                <p class="text-gray-400 text-sm pl-12">Most injections are completed within 15-30 minutes of order confirmation. Custom modded accounts may take up to 2 hours.</p>
+            </div>
+            <div class="glass-card p-8 rounded-3xl border border-white/5" data-aos="fade-up" data-aos-delay="200">
+                <h4 class="text-white font-black uppercase mb-3 text-lg flex items-center gap-4">
+                    <span class="w-8 h-8 rounded-lg bg-brand-purple/20 text-brand-purple flex items-center justify-center text-xs">Q</span>
+                    Do you need my login info?
+                </h4>
+                <p class="text-gray-400 text-sm pl-12">For full account boosts, yes. We use secure session protocols to protect your data. For basic drops, guest sessions are available.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Ticket Section -->
+    <section id="contact" class="py-32 px-6">
+        <div class="max-w-6xl mx-auto glass-card rounded-[3rem] p-1 border border-white/10 shadow-3xl" data-aos="zoom-in">
+            <div class="bg-brand-darker rounded-[2.9rem] p-10 md:p-20 flex flex-col lg:flex-row gap-16 items-center overflow-hidden relative">
+                <div class="absolute top-0 right-0 w-96 h-96 bg-brand-purple/10 blur-[100px] rounded-full"></div>
+                
+                <div class="lg:w-1/2 relative z-10">
+                    <span class="text-brand-purple font-black tracking-widest uppercase text-sm mb-4 block">Get Support</span>
+                    <h2 class="text-5xl md:text-7xl font-black font-heading mb-8 leading-tight uppercase">Ready To <br><span class="text-gradient">Start?</span></h2>
+                    <p class="text-gray-400 text-lg mb-10 leading-relaxed max-w-md">
+                        Join our community of over 3,000 satisfied players. Orders are processed 24/7 by Ryan Shatford through our private ticket system.
+                    </p>
+                    
+                    <div class="space-y-8">
+                        <div class="flex gap-6 items-center">
+                            <div class="w-14 h-14 rounded-2xl bg-brand-purple/10 flex items-center justify-center text-brand-purple text-2xl">
+                                <i class="fa-brands fa-discord"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-white text-xl uppercase">Discord Server</h4>
+                                <p class="text-gray-500 font-mono text-sm leading-none mt-1">discord.gg/qNndBDWYQW</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 items-center">
+                            <div class="w-14 h-14 rounded-2xl bg-brand-green/10 flex items-center justify-center text-brand-green text-2xl">
+                                <i class="fa-solid fa-bolt-lightning"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-white text-xl uppercase">Fast Response</h4>
+                                <p class="text-gray-500 font-mono text-sm leading-none mt-1">Under 5 Minute Average</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/2 w-full relative z-10">
+                    <div class="glass-card p-10 rounded-[2.5rem] border border-white/10 text-center relative overflow-hidden group">
+                        <div class="absolute -top-12 -right-12 w-32 h-32 bg-brand-purple/20 blur-3xl rounded-full"></div>
+                        <div class="w-24 h-24 bg-brand-purple rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-neon-purple transform group-hover:rotate-12 transition-transform duration-500">
+                             <i class="fa-solid fa-ticket text-4xl text-white"></i>
+                        </div>
+                        <h4 class="text-2xl font-black text-white mb-4 uppercase font-heading">Open A Ticket</h4>
+                        <p class="text-gray-400 mb-10">Click the button below to join and create an order ticket instantly.</p>
+                        <a href="https://discord.gg/qNndBDWYQW" target="_blank" class="block w-full py-6 bg-brand-purple hover:bg-brand-purpled text-white font-black text-xl rounded-2xl transition-all duration-300 shadow-neon-purple hover:scale-[1.02]">
+                            CREATE TICKET NOW
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Post-Footer Branding (Extra Professional Touch) -->
+    <div class="py-12 flex justify-center items-center gap-12 opacity-30 grayscale hover:grayscale-0 transition-all duration-500 max-w-7xl mx-auto px-6 overflow-hidden">
+        <i class="fa-brands fa-playstation text-4xl"></i>
+        <i class="fa-brands fa-xbox text-4xl"></i>
+        <i class="fa-brands fa-windows text-4xl"></i>
+        <i class="fa-brands fa-steam text-4xl"></i>
+        <i class="fa-brands fa-rockstargames text-6xl"></i>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-20 border-t border-white/5 bg-brand-darker">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
+            <div class="flex items-center gap-2 mb-10">
+                <div class="w-10 h-10 bg-brand-purple rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-bolt text-white text-xl"></i>
+                </div>
+                <span class="text-3xl font-black font-heading tracking-tighter uppercase">RYAN <span class="text-brand-purple">SHATFORD</span></span>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 w-full max-w-4xl text-center mb-16">
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Quick Links</h5>
+                    <ul class="space-y-4 text-gray-500 text-sm font-medium uppercase tracking-tighter">
+                        <li><a href="#hero" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#portfolio" class="hover:text-white transition-colors">Live Proof</a></li>
+                        <li><a href="#contact" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Services</h5>
+                    <ul class="space-y-4 text-gray-500 text-sm font-medium uppercase tracking-tighter">
+                        <li>Money Injection</li>
+                        <li>Rank Boosting</li>
+                        <li>Unlock All</li>
+                        <li>Custom Modded AC</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Community</h5>
+                    <ul class="space-y-4 text-gray-500 text-sm font-medium uppercase tracking-tighter">
+                        <li><a href="https://discord.gg/qNndBDWYQW" class="hover:text-white transition-colors">Discord</a></li>
+                        <li><a href="https://www.tiktok.com/@gtamoddedaccount007" class="hover:text-white transition-colors">TikTok</a></li>
+                        <li>Support Tickets</li>
+                        <li>Giveaways</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Legal</h5>
+                    <ul class="space-y-4 text-gray-500 text-sm font-medium uppercase tracking-tighter text-[10px]">
+                        <li>Terms of Service</li>
+                        <li>Refund Policy</li>
+                        <li>Privacy Policy</li>
+                        <li>Safety Guide</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="w-full h-px bg-white/5 mb-10"></div>
+            
+            <p class="text-gray-600 text-[10px] uppercase tracking-[0.5em] text-center max-w-2xl leading-relaxed">
+                &copy; 2026 RYAN SHATFORD. All products and services are provided for educational and demonstration purposes. Not affiliated with Rockstar Games or Take-Two Interactive. Use at your own risk.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Intro & Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            const progress = document.getElementById('intro-progress');
+            const overlay = document.getElementById('intro-overlay');
+            
+            // Start progress bar
+            setTimeout(() => { progress.style.width = '100%'; }, 100);
+
+            // Transition to main content
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+                
+                AOS.init({
+                    once: true,
+                    duration: 1000,
+                    offset: 100,
+                });
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
